@@ -72,11 +72,11 @@ func main() {
 
 	fmt.Println("\n===== Repository Information =====")
 	fmt.Printf("Name: %s\n", repoInfo.Name)
-	if repoInfo.Description != "" {
-		fmt.Printf("Description: %s\n", repoInfo.Description)
-	} else {
-		fmt.Printf("Description: No description\n")
-	}
+    description := repoInfo.Description
+	if description == "" {
+		description = "No description"
+	} 
+	fmt.Printf("Description: %s\n", description)
 	fmt.Printf("Stars: %d\n", repoInfo.Stargazers)
 	fmt.Printf("Forks: %d\n", repoInfo.Forks)
 	fmt.Printf("Created: %s\n", repoInfo.CreatedAt)
