@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.6.1
 // - protoc             v3.21.12
-// source: api/proto/repository.proto
+// source: api/proto/collector.proto
 
 package proto
 
@@ -19,7 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	CollectorService_GetRepository_FullMethodName = "/repository.CollectorService/GetRepository"
+	CollectorService_GetRepository_FullMethodName = "/collector.CollectorService/GetRepository"
 )
 
 // CollectorServiceClient is the client API for CollectorService service.
@@ -108,7 +108,7 @@ func _CollectorService_GetRepository_Handler(srv interface{}, ctx context.Contex
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var CollectorService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "repository.CollectorService",
+	ServiceName: "collector.CollectorService",
 	HandlerType: (*CollectorServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -117,5 +117,5 @@ var CollectorService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "api/proto/repository.proto",
+	Metadata: "api/proto/collector.proto",
 }

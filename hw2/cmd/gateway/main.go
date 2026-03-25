@@ -5,13 +5,29 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/LuhTonkaYeat/GoHomeworks/hw2/internal/gateway/client"
-	"github.com/LuhTonkaYeat/GoHomeworks/hw2/internal/gateway/handler"
+	"github.com/LuhTonkaYeat/GoHomeworks/hw2/internal/gateway/adapter/grpc"
+	httpHandler "github.com/LuhTonkaYeat/GoHomeworks/hw2/internal/gateway/adapter/http"
+	"github.com/LuhTonkaYeat/GoHomeworks/hw2/internal/gateway/usecase"
 
 	_ "github.com/LuhTonkaYeat/GoHomeworks/hw2/docs"
 	httpSwagger "github.com/swaggo/http-swagger"
 )
 
+// @title GitHub Repository API
+// @version 1.0
+// @description API for getting information about GitHub repositories
+// @termsOfService http://swagger.io/terms/
+
+// @contact.name API Support
+// @contact.email support@example.com
+
+// @license.name MIT
+// @license.url https://opensource.org/licenses/MIT
+
+// @host localhost:8080
+// @BasePath /
+
+// @schemes http
 func main() {
 	collectorAddr := os.Getenv("COLLECTOR_ADDR")
 	if collectorAddr == "" {
@@ -19,31 +35,29 @@ func main() {
 		log.Printf("COLLECTOR_ADDR not set, using default: %s", collectorAddr)
 	}
 
-	collectorClient, err := client.NewCollectorClient(collectorAddr)
+	grpcClient, err := grpc.NewClient(collectorAddr)
 	if err != nil {
-		log.Fatalf("Failed to connect to Collector: %v", err)
+		log.Fatalf("Failed to create gRPC client: %v", err)
 	}
-	defer collectorClient.Close()
+	defer grpcClient.Close()
 
-	log.Printf("Connected to Collector at %s", collectorAddr)
+	repoUseCase := usecase.NewRepositoryUseCase(grpcClient)
+	httpHandler := httpHandler.NewHandler(repoUseCase)
 
-	repoHandler := handler.NewRepoHandler(collectorClient)
+	mux := http.NewServeMux()
 
-	http.HandleFunc("/repo", repoHandler.GetRepository)
+	mux.HandleFunc("/repo", httpHandler.GetRepository)
 
-	http.HandleFunc("/swagger/", httpSwagger.WrapHandler)
-
-	http.HandleFunc("/swagger/doc.json", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "./docs/swagger.json")
-	})
+	mux.HandleFunc("/swagger/", httpSwagger.WrapHandler)
 
 	port := ":8080"
 	log.Printf("Gateway server is running on port %s", port)
+	log.Printf("Collector address: %s", collectorAddr)
 	log.Printf("Available endpoints:")
 	log.Printf("  GET /repo?owner={owner}&repo={repo} - get repository info")
 	log.Printf("  GET /swagger/ - Swagger UI")
 
-	if err := http.ListenAndServe(port, nil); err != nil {
+	if err := http.ListenAndServe(port, mux); err != nil {
 		log.Fatalf("Failed to start server: %v", err)
 	}
 }

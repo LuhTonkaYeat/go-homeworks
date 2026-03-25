@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        v3.21.12
-// source: api/proto/repository.proto
+// source: api/proto/collector.proto
 
 package proto
 
@@ -31,7 +31,7 @@ type RepoRequest struct {
 
 func (x *RepoRequest) Reset() {
 	*x = RepoRequest{}
-	mi := &file_api_proto_repository_proto_msgTypes[0]
+	mi := &file_api_proto_collector_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -43,7 +43,7 @@ func (x *RepoRequest) String() string {
 func (*RepoRequest) ProtoMessage() {}
 
 func (x *RepoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_repository_proto_msgTypes[0]
+	mi := &file_api_proto_collector_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -56,7 +56,7 @@ func (x *RepoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RepoRequest.ProtoReflect.Descriptor instead.
 func (*RepoRequest) Descriptor() ([]byte, []int) {
-	return file_api_proto_repository_proto_rawDescGZIP(), []int{0}
+	return file_api_proto_collector_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *RepoRequest) GetOwner() string {
@@ -86,7 +86,7 @@ type RepoResponse struct {
 
 func (x *RepoResponse) Reset() {
 	*x = RepoResponse{}
-	mi := &file_api_proto_repository_proto_msgTypes[1]
+	mi := &file_api_proto_collector_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -98,7 +98,7 @@ func (x *RepoResponse) String() string {
 func (*RepoResponse) ProtoMessage() {}
 
 func (x *RepoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_repository_proto_msgTypes[1]
+	mi := &file_api_proto_collector_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -111,7 +111,7 @@ func (x *RepoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RepoResponse.ProtoReflect.Descriptor instead.
 func (*RepoResponse) Descriptor() ([]byte, []int) {
-	return file_api_proto_repository_proto_rawDescGZIP(), []int{1}
+	return file_api_proto_collector_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *RepoResponse) GetName() string {
@@ -149,12 +149,11 @@ func (x *RepoResponse) GetCreatedAt() string {
 	return ""
 }
 
-var File_api_proto_repository_proto protoreflect.FileDescriptor
+var File_api_proto_collector_proto protoreflect.FileDescriptor
 
-const file_api_proto_repository_proto_rawDesc = "" +
+const file_api_proto_collector_proto_rawDesc = "" +
 	"\n" +
-	"\x1aapi/proto/repository.proto\x12\n" +
-	"repository\"7\n" +
+	"\x19api/proto/collector.proto\x12\tcollector\"7\n" +
 	"\vRepoRequest\x12\x14\n" +
 	"\x05owner\x18\x01 \x01(\tR\x05owner\x12\x12\n" +
 	"\x04repo\x18\x02 \x01(\tR\x04repo\"\x8f\x01\n" +
@@ -164,30 +163,30 @@ const file_api_proto_repository_proto_rawDesc = "" +
 	"\x05stars\x18\x03 \x01(\x05R\x05stars\x12\x14\n" +
 	"\x05forks\x18\x04 \x01(\x05R\x05forks\x12\x1d\n" +
 	"\n" +
-	"created_at\x18\x05 \x01(\tR\tcreatedAt2X\n" +
-	"\x10CollectorService\x12D\n" +
-	"\rGetRepository\x12\x17.repository.RepoRequest\x1a\x18.repository.RepoResponse\"\x00B3Z1github.com/LuhTonkaYeat/GoHomeworks/hw2/api/protob\x06proto3"
+	"created_at\x18\x05 \x01(\tR\tcreatedAt2V\n" +
+	"\x10CollectorService\x12B\n" +
+	"\rGetRepository\x12\x16.collector.RepoRequest\x1a\x17.collector.RepoResponse\"\x00B3Z1github.com/LuhTonkaYeat/GoHomeworks/hw2/api/protob\x06proto3"
 
 var (
-	file_api_proto_repository_proto_rawDescOnce sync.Once
-	file_api_proto_repository_proto_rawDescData []byte
+	file_api_proto_collector_proto_rawDescOnce sync.Once
+	file_api_proto_collector_proto_rawDescData []byte
 )
 
-func file_api_proto_repository_proto_rawDescGZIP() []byte {
-	file_api_proto_repository_proto_rawDescOnce.Do(func() {
-		file_api_proto_repository_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_api_proto_repository_proto_rawDesc), len(file_api_proto_repository_proto_rawDesc)))
+func file_api_proto_collector_proto_rawDescGZIP() []byte {
+	file_api_proto_collector_proto_rawDescOnce.Do(func() {
+		file_api_proto_collector_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_api_proto_collector_proto_rawDesc), len(file_api_proto_collector_proto_rawDesc)))
 	})
-	return file_api_proto_repository_proto_rawDescData
+	return file_api_proto_collector_proto_rawDescData
 }
 
-var file_api_proto_repository_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
-var file_api_proto_repository_proto_goTypes = []any{
-	(*RepoRequest)(nil),  // 0: repository.RepoRequest
-	(*RepoResponse)(nil), // 1: repository.RepoResponse
+var file_api_proto_collector_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_api_proto_collector_proto_goTypes = []any{
+	(*RepoRequest)(nil),  // 0: collector.RepoRequest
+	(*RepoResponse)(nil), // 1: collector.RepoResponse
 }
-var file_api_proto_repository_proto_depIdxs = []int32{
-	0, // 0: repository.CollectorService.GetRepository:input_type -> repository.RepoRequest
-	1, // 1: repository.CollectorService.GetRepository:output_type -> repository.RepoResponse
+var file_api_proto_collector_proto_depIdxs = []int32{
+	0, // 0: collector.CollectorService.GetRepository:input_type -> collector.RepoRequest
+	1, // 1: collector.CollectorService.GetRepository:output_type -> collector.RepoResponse
 	1, // [1:2] is the sub-list for method output_type
 	0, // [0:1] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
@@ -195,26 +194,26 @@ var file_api_proto_repository_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_api_proto_repository_proto_init() }
-func file_api_proto_repository_proto_init() {
-	if File_api_proto_repository_proto != nil {
+func init() { file_api_proto_collector_proto_init() }
+func file_api_proto_collector_proto_init() {
+	if File_api_proto_collector_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_proto_repository_proto_rawDesc), len(file_api_proto_repository_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_proto_collector_proto_rawDesc), len(file_api_proto_collector_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_api_proto_repository_proto_goTypes,
-		DependencyIndexes: file_api_proto_repository_proto_depIdxs,
-		MessageInfos:      file_api_proto_repository_proto_msgTypes,
+		GoTypes:           file_api_proto_collector_proto_goTypes,
+		DependencyIndexes: file_api_proto_collector_proto_depIdxs,
+		MessageInfos:      file_api_proto_collector_proto_msgTypes,
 	}.Build()
-	File_api_proto_repository_proto = out.File
-	file_api_proto_repository_proto_goTypes = nil
-	file_api_proto_repository_proto_depIdxs = nil
+	File_api_proto_collector_proto = out.File
+	file_api_proto_collector_proto_goTypes = nil
+	file_api_proto_collector_proto_depIdxs = nil
 }
