@@ -6,7 +6,7 @@ import (
 
 	pb "github.com/LuhTonkaYeat/GoHomeworks/hw2/services/collector/api/proto"
 	"github.com/LuhTonkaYeat/GoHomeworks/hw2/services/collector/internal/adapter/github"
-	grpcHandler "github.com/LuhTonkaYeat/GoHomeworks/hw2/services/collector/internal/adapter/grpc"
+	grpcHandler "github.com/LuhTonkaYeat/GoHomeworks/hw2/services/collector/internal/delivery/grpc"
 	"github.com/LuhTonkaYeat/GoHomeworks/hw2/services/collector/internal/usecase"
 	"google.golang.org/grpc"
 )

@@ -7,7 +7,7 @@ import (
 
 	_ "github.com/LuhTonkaYeat/GoHomeworks/hw2/services/gateway/docs"
 	"github.com/LuhTonkaYeat/GoHomeworks/hw2/services/gateway/internal/adapter/grpc"
-	httpHandler "github.com/LuhTonkaYeat/GoHomeworks/hw2/services/gateway/internal/adapter/http"
+	httpHandler "github.com/LuhTonkaYeat/GoHomeworks/hw2/services/gateway/internal/delivery/http"
 	"github.com/LuhTonkaYeat/GoHomeworks/hw2/services/gateway/internal/usecase"
 	httpSwagger "github.com/swaggo/http-swagger"
 )
