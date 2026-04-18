@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/LuhTonkaYeat/GoHomeworks/hw2/services/gateway/internal/domain"
+	"github.com/LuhTonkaYeat/GoHomeworks/hw2-4/services/gateway/internal/domain"
 )
 
 type ServiceStatus struct {

@@ -5,16 +5,18 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/LuhTonkaYeat/GoHomeworks/hw2/services/gateway/internal/usecase"
+	"github.com/LuhTonkaYeat/GoHomeworks/hw2-4/services/gateway/internal/usecase"
 )
 
 type Handler struct {
-	repoUseCase usecase.RepositoryUseCase
+	repoUseCase         usecase.RepositoryUseCase
+	subscriptionUseCase usecase.SubscriptionUseCase
 }
 
-func NewHandler(repoUseCase usecase.RepositoryUseCase) *Handler {
+func NewHandler(repoUseCase usecase.RepositoryUseCase, subscriptionUseCase usecase.SubscriptionUseCase) *Handler {
 	return &Handler{
-		repoUseCase: repoUseCase,
+		repoUseCase:         repoUseCase,
+		subscriptionUseCase: subscriptionUseCase,
 	}
 }
 
@@ -23,21 +25,21 @@ type ErrorResponse struct {
 }
 
 type RepositoryResponse struct {
-	FullName    string `json:"full_name"`
-	Description string `json:"description"`
-	Stars       int    `json:"stars"`
-	Forks       int    `json:"forks"`
-	CreatedAt   string `json:"created_at"`
+	FullName    string
+	Description string
+	Stars       int
+	Forks       int
+	CreatedAt   string
 }
 
 type ServiceStatus struct {
-	Name   string `json:"name"`
-	Status string `json:"status"`
+	Name   string
+	Status string
 }
 
 type PingResponse struct {
-	Status   string          `json:"status"`
-	Services []ServiceStatus `json:"services"`
+	Status   string
+	Services []ServiceStatus
 }
 
 // GetRepository godoc
@@ -122,6 +124,97 @@ func (h *Handler) Ping(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusServiceUnavailable)
 	}
 	sendJSON(w, http.StatusOK, response)
+}
+
+// CreateSubscription godoc
+// @Summary Subscribe to a repository
+// @Description Create a subscription to a GitHub repository
+// @Tags subscriptions
+// @Accept json
+// @Produce json
+// @Param request body CreateSubscriptionRequest true "Subscription info"
+// @Success 201 {object} map[string]string
+// @Failure 400 {object} ErrorResponse
+// @Failure 500 {object} ErrorResponse
+// @Router /subscriptions [post]
+func (h *Handler) CreateSubscription(w http.ResponseWriter, r *http.Request) {
+	var req struct {
+		Owner string `json:"owner"`
+		Repo  string `json:"repo"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		sendError(w, http.StatusBadRequest, "invalid request body")
+		return
+	}
+
+	if req.Owner == "" || req.Repo == "" {
+		sendError(w, http.StatusBadRequest, "owner and repo are required")
+		return
+	}
+
+	userID := "default"
+
+	err := h.subscriptionUseCase.CreateSubscription(r.Context(), req.Owner, req.Repo, userID)
+	if err != nil {
+		sendError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	sendJSON(w, http.StatusCreated, map[string]string{"message": "subscription created"})
+}
+
+// DeleteSubscription godoc
+// @Summary Unsubscribe from a repository
+// @Description Delete a subscription from a GitHub repository
+// @Tags subscriptions
+// @Accept json
+// @Produce json
+// @Param owner path string true "Repository owner"
+// @Param repo path string true "Repository name"
+// @Success 200 {object} map[string]string
+// @Failure 400 {object} ErrorResponse
+// @Failure 500 {object} ErrorResponse
+// @Router /subscriptions/{owner}/{repo} [delete]
+func (h *Handler) DeleteSubscription(w http.ResponseWriter, r *http.Request) {
+	owner := r.PathValue("owner")
+	repo := r.PathValue("repo")
+
+	if owner == "" || repo == "" {
+		sendError(w, http.StatusBadRequest, "owner and repo are required")
+		return
+	}
+
+	userID := "default"
+
+	err := h.subscriptionUseCase.DeleteSubscription(r.Context(), owner, repo, userID)
+	if err != nil {
+		sendError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	sendJSON(w, http.StatusOK, map[string]string{"message": "subscription deleted"})
+}
+
+// GetSubscriptions godoc
+// @Summary Get all subscriptions
+// @Description Get list of subscribed repositories
+// @Tags subscriptions
+// @Accept json
+// @Produce json
+// @Success 200 {array} RepositoryResponse
+// @Failure 500 {object} ErrorResponse
+// @Router /subscriptions [get]
+func (h *Handler) GetSubscriptions(w http.ResponseWriter, r *http.Request) {
+	userID := "default"
+
+	subscriptions, err := h.subscriptionUseCase.GetSubscriptions(r.Context(), userID)
+	if err != nil {
+		sendError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	sendJSON(w, http.StatusOK, subscriptions)
 }
 
 func parseGitHubURL(url string) (string, string) {

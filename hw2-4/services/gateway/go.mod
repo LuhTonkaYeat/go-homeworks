@@ -1,4 +1,4 @@
-module github.com/LuhTonkaYeat/GoHomeworks/hw2/services/gateway
+module github.com/LuhTonkaYeat/GoHomeworks/hw2-4/services/gateway
 
 go 1.26.1
 

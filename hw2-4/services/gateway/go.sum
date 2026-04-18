@@ -1,5 +1,7 @@
 github.com/KyleBanks/depth v1.2.1 h1:5h8fQADFrWtarTdtDudMmGsC7GPbOAu6RVB3ffsVFHc=
 github.com/KyleBanks/depth v1.2.1/go.mod h1:jzSb9d0L43HxTQfT+oSA1EEp2q+ne2uh6XgeJcm8brE=
+github.com/LuhTonkaYeat/GoHomeworks/hw2/services/gateway v0.0.0-20260418101019-fde7ad396c6e h1:BgFPnLv5hLI47A5Ji3thDB4oKWWETy5POH80CNIHaho=
+github.com/LuhTonkaYeat/GoHomeworks/hw2/services/gateway v0.0.0-20260418101019-fde7ad396c6e/go.mod h1:mGPXHaDsAZ4PzOLdAv1vcrBcj3XXMg80R8vhfmCrjyQ=
 github.com/cespare/xxhash/v2 v2.3.0 h1:UL815xU9SqsFlibzuggzjXhog7bL6oX9BbNZnL2UFvs=
 github.com/cespare/xxhash/v2 v2.3.0/go.mod h1:VGX0DQ3Q6kWi7AoAeZDth3/j3BFtOZR5XLFGgcrjCOs=
 github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ33E=
