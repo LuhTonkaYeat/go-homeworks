@@ -229,6 +229,86 @@ func (x *PingResponse) GetStatus() string {
 	return ""
 }
 
+type Empty struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Empty) Reset() {
+	*x = Empty{}
+	mi := &file_processor_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Empty) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Empty) ProtoMessage() {}
+
+func (x *Empty) ProtoReflect() protoreflect.Message {
+	mi := &file_processor_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Empty.ProtoReflect.Descriptor instead.
+func (*Empty) Descriptor() ([]byte, []int) {
+	return file_processor_proto_rawDescGZIP(), []int{4}
+}
+
+type SubscriptionsInfoResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Repositories  []*RepoResponse        `protobuf:"bytes,1,rep,name=repositories,proto3" json:"repositories,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SubscriptionsInfoResponse) Reset() {
+	*x = SubscriptionsInfoResponse{}
+	mi := &file_processor_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SubscriptionsInfoResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SubscriptionsInfoResponse) ProtoMessage() {}
+
+func (x *SubscriptionsInfoResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_processor_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SubscriptionsInfoResponse.ProtoReflect.Descriptor instead.
+func (*SubscriptionsInfoResponse) Descriptor() ([]byte, []int) {
+	return file_processor_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *SubscriptionsInfoResponse) GetRepositories() []*RepoResponse {
+	if x != nil {
+		return x.Repositories
+	}
+	return nil
+}
+
 var File_processor_proto protoreflect.FileDescriptor
 
 const file_processor_proto_rawDesc = "" +
@@ -246,10 +326,14 @@ const file_processor_proto_rawDesc = "" +
 	"created_at\x18\x05 \x01(\tR\tcreatedAt\"\r\n" +
 	"\vPingRequest\"&\n" +
 	"\fPingResponse\x12\x16\n" +
-	"\x06status\x18\x01 \x01(\tR\x06status2\x91\x01\n" +
+	"\x06status\x18\x01 \x01(\tR\x06status\"\a\n" +
+	"\x05Empty\"X\n" +
+	"\x19SubscriptionsInfoResponse\x12;\n" +
+	"\frepositories\x18\x01 \x03(\v2\x17.processor.RepoResponseR\frepositories2\xe3\x01\n" +
 	"\x10ProcessorService\x12B\n" +
 	"\rGetRepository\x12\x16.processor.RepoRequest\x1a\x17.processor.RepoResponse\"\x00\x129\n" +
-	"\x04Ping\x12\x16.processor.PingRequest\x1a\x17.processor.PingResponse\"\x00BFZDgithub.com/LuhTonkaYeat/GoHomeworks/hw2/services/processor/api/protob\x06proto3"
+	"\x04Ping\x12\x16.processor.PingRequest\x1a\x17.processor.PingResponse\"\x00\x12P\n" +
+	"\x14GetSubscriptionsInfo\x12\x10.processor.Empty\x1a$.processor.SubscriptionsInfoResponse\"\x00BHZFgithub.com/LuhTonkaYeat/GoHomeworks/hw2-4/services/processor/api/protob\x06proto3"
 
 var (
 	file_processor_proto_rawDescOnce sync.Once
@@ -263,23 +347,28 @@ func file_processor_proto_rawDescGZIP() []byte {
 	return file_processor_proto_rawDescData
 }
 
-var file_processor_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_processor_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_processor_proto_goTypes = []any{
-	(*RepoRequest)(nil),  // 0: processor.RepoRequest
-	(*RepoResponse)(nil), // 1: processor.RepoResponse
-	(*PingRequest)(nil),  // 2: processor.PingRequest
-	(*PingResponse)(nil), // 3: processor.PingResponse
+	(*RepoRequest)(nil),               // 0: processor.RepoRequest
+	(*RepoResponse)(nil),              // 1: processor.RepoResponse
+	(*PingRequest)(nil),               // 2: processor.PingRequest
+	(*PingResponse)(nil),              // 3: processor.PingResponse
+	(*Empty)(nil),                     // 4: processor.Empty
+	(*SubscriptionsInfoResponse)(nil), // 5: processor.SubscriptionsInfoResponse
 }
 var file_processor_proto_depIdxs = []int32{
-	0, // 0: processor.ProcessorService.GetRepository:input_type -> processor.RepoRequest
-	2, // 1: processor.ProcessorService.Ping:input_type -> processor.PingRequest
-	1, // 2: processor.ProcessorService.GetRepository:output_type -> processor.RepoResponse
-	3, // 3: processor.ProcessorService.Ping:output_type -> processor.PingResponse
-	2, // [2:4] is the sub-list for method output_type
-	0, // [0:2] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	1, // 0: processor.SubscriptionsInfoResponse.repositories:type_name -> processor.RepoResponse
+	0, // 1: processor.ProcessorService.GetRepository:input_type -> processor.RepoRequest
+	2, // 2: processor.ProcessorService.Ping:input_type -> processor.PingRequest
+	4, // 3: processor.ProcessorService.GetSubscriptionsInfo:input_type -> processor.Empty
+	1, // 4: processor.ProcessorService.GetRepository:output_type -> processor.RepoResponse
+	3, // 5: processor.ProcessorService.Ping:output_type -> processor.PingResponse
+	5, // 6: processor.ProcessorService.GetSubscriptionsInfo:output_type -> processor.SubscriptionsInfoResponse
+	4, // [4:7] is the sub-list for method output_type
+	1, // [1:4] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_processor_proto_init() }
@@ -293,7 +382,7 @@ func file_processor_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_processor_proto_rawDesc), len(file_processor_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   4,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

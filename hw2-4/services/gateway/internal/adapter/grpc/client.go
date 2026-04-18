@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	pb "github.com/LuhTonkaYeat/GoHomeworks/hw2-4/services/gateway/api/proto"
+	processorPb "github.com/LuhTonkaYeat/GoHomeworks/hw2-4/services/gateway/api/proto/processor"
 	"github.com/LuhTonkaYeat/GoHomeworks/hw2-4/services/gateway/internal/domain"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -15,7 +15,7 @@ import (
 
 type Client struct {
 	conn   *grpc.ClientConn
-	client pb.ProcessorServiceClient
+	client processorPb.ProcessorServiceClient
 }
 
 func NewClient(addr string) (*Client, error) {
@@ -26,7 +26,7 @@ func NewClient(addr string) (*Client, error) {
 
 	return &Client{
 		conn:   conn,
-		client: pb.NewProcessorServiceClient(conn),
+		client: processorPb.NewProcessorServiceClient(conn),
 	}, nil
 }
 
@@ -38,7 +38,7 @@ func (c *Client) GetRepository(ctx context.Context, owner, repo string) (*domain
 	ctx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
 
-	resp, err := c.client.GetRepository(ctx, &pb.RepoRequest{
+	resp, err := c.client.GetRepository(ctx, &processorPb.RepoRequest{
 		Owner: owner,
 		Repo:  repo,
 	})
@@ -75,9 +75,20 @@ func (c *Client) Ping(ctx context.Context) (string, error) {
 	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
 	defer cancel()
 
-	resp, err := c.client.Ping(ctx, &pb.PingRequest{})
+	resp, err := c.client.Ping(ctx, &processorPb.PingRequest{})
 	if err != nil {
 		return "down", err
 	}
 	return resp.Status, nil
+}
+
+func (c *Client) GetSubscriptionsInfo(ctx context.Context) ([]*processorPb.RepoResponse, error) {
+	req := &processorPb.Empty{}
+
+	resp, err := c.client.GetSubscriptionsInfo(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+
+	return resp.Repositories, nil
 }

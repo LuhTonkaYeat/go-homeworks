@@ -42,18 +42,6 @@ type PingResponse struct {
 	Services []ServiceStatus
 }
 
-// GetRepository godoc
-// @Summary Get repository information
-// @Description Get information about a GitHub repository by URL
-// @Tags repositories
-// @Accept json
-// @Produce json
-// @Param url query string true "GitHub repository URL (e.g., https://github.com/golang/go)"
-// @Success 200 {object} RepositoryResponse
-// @Failure 400 {object} ErrorResponse
-// @Failure 404 {object} ErrorResponse
-// @Failure 500 {object} ErrorResponse
-// @Router /api/repositories/info [get]
 func (h *Handler) GetRepository(w http.ResponseWriter, r *http.Request) {
 	urlParam := r.URL.Query().Get("url")
 	if urlParam == "" {
@@ -91,15 +79,6 @@ func (h *Handler) GetRepository(w http.ResponseWriter, r *http.Request) {
 	sendJSON(w, http.StatusOK, response)
 }
 
-// Ping godoc
-// @Summary Check services status
-// @Description Ping processor and subscriber services
-// @Tags health
-// @Accept json
-// @Produce json
-// @Success 200 {object} PingResponse
-// @Failure 503 {object} PingResponse
-// @Router /api/ping [get]
 func (h *Handler) Ping(w http.ResponseWriter, r *http.Request) {
 	status, services, err := h.repoUseCase.Ping(r.Context())
 	if err != nil {
@@ -126,17 +105,6 @@ func (h *Handler) Ping(w http.ResponseWriter, r *http.Request) {
 	sendJSON(w, http.StatusOK, response)
 }
 
-// CreateSubscription godoc
-// @Summary Subscribe to a repository
-// @Description Create a subscription to a GitHub repository
-// @Tags subscriptions
-// @Accept json
-// @Produce json
-// @Param request body CreateSubscriptionRequest true "Subscription info"
-// @Success 201 {object} map[string]string
-// @Failure 400 {object} ErrorResponse
-// @Failure 500 {object} ErrorResponse
-// @Router /subscriptions [post]
 func (h *Handler) CreateSubscription(w http.ResponseWriter, r *http.Request) {
 	var req struct {
 		Owner string `json:"owner"`
@@ -164,18 +132,6 @@ func (h *Handler) CreateSubscription(w http.ResponseWriter, r *http.Request) {
 	sendJSON(w, http.StatusCreated, map[string]string{"message": "subscription created"})
 }
 
-// DeleteSubscription godoc
-// @Summary Unsubscribe from a repository
-// @Description Delete a subscription from a GitHub repository
-// @Tags subscriptions
-// @Accept json
-// @Produce json
-// @Param owner path string true "Repository owner"
-// @Param repo path string true "Repository name"
-// @Success 200 {object} map[string]string
-// @Failure 400 {object} ErrorResponse
-// @Failure 500 {object} ErrorResponse
-// @Router /subscriptions/{owner}/{repo} [delete]
 func (h *Handler) DeleteSubscription(w http.ResponseWriter, r *http.Request) {
 	owner := r.PathValue("owner")
 	repo := r.PathValue("repo")
@@ -196,15 +152,6 @@ func (h *Handler) DeleteSubscription(w http.ResponseWriter, r *http.Request) {
 	sendJSON(w, http.StatusOK, map[string]string{"message": "subscription deleted"})
 }
 
-// GetSubscriptions godoc
-// @Summary Get all subscriptions
-// @Description Get list of subscribed repositories
-// @Tags subscriptions
-// @Accept json
-// @Produce json
-// @Success 200 {array} RepositoryResponse
-// @Failure 500 {object} ErrorResponse
-// @Router /subscriptions [get]
 func (h *Handler) GetSubscriptions(w http.ResponseWriter, r *http.Request) {
 	userID := "default"
 
@@ -238,4 +185,18 @@ func sendJSON(w http.ResponseWriter, status int, data interface{}) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
 	json.NewEncoder(w).Encode(data)
+}
+
+func (h *Handler) GetSubscriptionsInfo(w http.ResponseWriter, r *http.Request) {
+	userID := "default"
+
+	repositories, err := h.subscriptionUseCase.GetSubscriptionsInfo(r.Context(), userID)
+	if err != nil {
+		sendError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	sendJSON(w, http.StatusOK, map[string]interface{}{
+		"repositories": repositories,
+	})
 }

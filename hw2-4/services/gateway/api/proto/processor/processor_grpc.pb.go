@@ -19,8 +19,9 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	ProcessorService_GetRepository_FullMethodName = "/processor.ProcessorService/GetRepository"
-	ProcessorService_Ping_FullMethodName          = "/processor.ProcessorService/Ping"
+	ProcessorService_GetRepository_FullMethodName        = "/processor.ProcessorService/GetRepository"
+	ProcessorService_Ping_FullMethodName                 = "/processor.ProcessorService/Ping"
+	ProcessorService_GetSubscriptionsInfo_FullMethodName = "/processor.ProcessorService/GetSubscriptionsInfo"
 )
 
 // ProcessorServiceClient is the client API for ProcessorService service.
@@ -29,6 +30,7 @@ const (
 type ProcessorServiceClient interface {
 	GetRepository(ctx context.Context, in *RepoRequest, opts ...grpc.CallOption) (*RepoResponse, error)
 	Ping(ctx context.Context, in *PingRequest, opts ...grpc.CallOption) (*PingResponse, error)
+	GetSubscriptionsInfo(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*SubscriptionsInfoResponse, error)
 }
 
 type processorServiceClient struct {
@@ -59,12 +61,23 @@ func (c *processorServiceClient) Ping(ctx context.Context, in *PingRequest, opts
 	return out, nil
 }
 
+func (c *processorServiceClient) GetSubscriptionsInfo(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*SubscriptionsInfoResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SubscriptionsInfoResponse)
+	err := c.cc.Invoke(ctx, ProcessorService_GetSubscriptionsInfo_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ProcessorServiceServer is the server API for ProcessorService service.
 // All implementations must embed UnimplementedProcessorServiceServer
 // for forward compatibility.
 type ProcessorServiceServer interface {
 	GetRepository(context.Context, *RepoRequest) (*RepoResponse, error)
 	Ping(context.Context, *PingRequest) (*PingResponse, error)
+	GetSubscriptionsInfo(context.Context, *Empty) (*SubscriptionsInfoResponse, error)
 	mustEmbedUnimplementedProcessorServiceServer()
 }
 
@@ -80,6 +93,9 @@ func (UnimplementedProcessorServiceServer) GetRepository(context.Context, *RepoR
 }
 func (UnimplementedProcessorServiceServer) Ping(context.Context, *PingRequest) (*PingResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method Ping not implemented")
+}
+func (UnimplementedProcessorServiceServer) GetSubscriptionsInfo(context.Context, *Empty) (*SubscriptionsInfoResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetSubscriptionsInfo not implemented")
 }
 func (UnimplementedProcessorServiceServer) mustEmbedUnimplementedProcessorServiceServer() {}
 func (UnimplementedProcessorServiceServer) testEmbeddedByValue()                          {}
@@ -138,6 +154,24 @@ func _ProcessorService_Ping_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ProcessorService_GetSubscriptionsInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProcessorServiceServer).GetSubscriptionsInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ProcessorService_GetSubscriptionsInfo_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProcessorServiceServer).GetSubscriptionsInfo(ctx, req.(*Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ProcessorService_ServiceDesc is the grpc.ServiceDesc for ProcessorService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -152,6 +186,10 @@ var ProcessorService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Ping",
 			Handler:    _ProcessorService_Ping_Handler,
+		},
+		{
+			MethodName: "GetSubscriptionsInfo",
+			Handler:    _ProcessorService_GetSubscriptionsInfo_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

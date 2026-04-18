@@ -3,7 +3,8 @@ package grpc
 import (
 	"context"
 
-	pb "github.com/LuhTonkaYeat/GoHomeworks/hw2-4/services/processor/api/proto"
+	pb "github.com/LuhTonkaYeat/GoHomeworks/hw2-4/services/processor/api/proto/processor"
+	"github.com/LuhTonkaYeat/GoHomeworks/hw2-4/services/processor/internal/adapter/grpc"
 	"github.com/LuhTonkaYeat/GoHomeworks/hw2-4/services/processor/internal/usecase"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -11,12 +12,14 @@ import (
 
 type Handler struct {
 	pb.UnimplementedProcessorServiceServer
-	repoUseCase usecase.RepositoryUseCase
+	repoUseCase     usecase.RepositoryUseCase
+	collectorClient *grpc.Client
 }
 
-func NewHandler(repoUseCase usecase.RepositoryUseCase) *Handler {
+func NewHandler(repoUseCase usecase.RepositoryUseCase, collectorClient *grpc.Client) *Handler {
 	return &Handler{
-		repoUseCase: repoUseCase,
+		repoUseCase:     repoUseCase,
+		collectorClient: collectorClient,
 	}
 }
 
@@ -48,4 +51,24 @@ func (h *Handler) Ping(ctx context.Context, req *pb.PingRequest) (*pb.PingRespon
 		return &pb.PingResponse{Status: "down"}, nil
 	}
 	return &pb.PingResponse{Status: status}, nil
+}
+
+func (h *Handler) GetSubscriptionsInfo(ctx context.Context, req *pb.Empty) (*pb.SubscriptionsInfoResponse, error) {
+	resp, err := h.collectorClient.GetSubscriptionsInfo(ctx)
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	var repos []*pb.RepoResponse
+	for _, repo := range resp.Repositories {
+		repos = append(repos, &pb.RepoResponse{
+			Name:        repo.Name,
+			Description: repo.Description,
+			Stars:       repo.Stars,
+			Forks:       repo.Forks,
+			CreatedAt:   repo.CreatedAt,
+		})
+	}
+
+	return &pb.SubscriptionsInfoResponse{Repositories: repos}, nil
 }

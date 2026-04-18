@@ -149,6 +149,86 @@ func (x *CollectorRepoResponse) GetCreatedAt() string {
 	return ""
 }
 
+type Empty struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Empty) Reset() {
+	*x = Empty{}
+	mi := &file_collector_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Empty) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Empty) ProtoMessage() {}
+
+func (x *Empty) ProtoReflect() protoreflect.Message {
+	mi := &file_collector_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Empty.ProtoReflect.Descriptor instead.
+func (*Empty) Descriptor() ([]byte, []int) {
+	return file_collector_proto_rawDescGZIP(), []int{2}
+}
+
+type SubscriptionsInfoResponse struct {
+	state         protoimpl.MessageState   `protogen:"open.v1"`
+	Repositories  []*CollectorRepoResponse `protobuf:"bytes,1,rep,name=repositories,proto3" json:"repositories,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SubscriptionsInfoResponse) Reset() {
+	*x = SubscriptionsInfoResponse{}
+	mi := &file_collector_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SubscriptionsInfoResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SubscriptionsInfoResponse) ProtoMessage() {}
+
+func (x *SubscriptionsInfoResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_collector_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SubscriptionsInfoResponse.ProtoReflect.Descriptor instead.
+func (*SubscriptionsInfoResponse) Descriptor() ([]byte, []int) {
+	return file_collector_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *SubscriptionsInfoResponse) GetRepositories() []*CollectorRepoResponse {
+	if x != nil {
+		return x.Repositories
+	}
+	return nil
+}
+
 var File_collector_proto protoreflect.FileDescriptor
 
 const file_collector_proto_rawDesc = "" +
@@ -163,9 +243,13 @@ const file_collector_proto_rawDesc = "" +
 	"\x05stars\x18\x03 \x01(\x05R\x05stars\x12\x14\n" +
 	"\x05forks\x18\x04 \x01(\x05R\x05forks\x12\x1d\n" +
 	"\n" +
-	"created_at\x18\x05 \x01(\tR\tcreatedAt2h\n" +
+	"created_at\x18\x05 \x01(\tR\tcreatedAt\"\a\n" +
+	"\x05Empty\"a\n" +
+	"\x19SubscriptionsInfoResponse\x12D\n" +
+	"\frepositories\x18\x01 \x03(\v2 .collector.CollectorRepoResponseR\frepositories2\xba\x01\n" +
 	"\x10CollectorService\x12T\n" +
-	"\rGetRepository\x12\x1f.collector.CollectorRepoRequest\x1a .collector.CollectorRepoResponse\"\x00BFZDgithub.com/LuhTonkaYeat/GoHomeworks/hw2/services/collector/api/protob\x06proto3"
+	"\rGetRepository\x12\x1f.collector.CollectorRepoRequest\x1a .collector.CollectorRepoResponse\"\x00\x12P\n" +
+	"\x14GetSubscriptionsInfo\x12\x10.collector.Empty\x1a$.collector.SubscriptionsInfoResponse\"\x00BHZFgithub.com/LuhTonkaYeat/GoHomeworks/hw2-4/services/processor/api/protob\x06proto3"
 
 var (
 	file_collector_proto_rawDescOnce sync.Once
@@ -179,19 +263,24 @@ func file_collector_proto_rawDescGZIP() []byte {
 	return file_collector_proto_rawDescData
 }
 
-var file_collector_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_collector_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_collector_proto_goTypes = []any{
-	(*CollectorRepoRequest)(nil),  // 0: collector.CollectorRepoRequest
-	(*CollectorRepoResponse)(nil), // 1: collector.CollectorRepoResponse
+	(*CollectorRepoRequest)(nil),      // 0: collector.CollectorRepoRequest
+	(*CollectorRepoResponse)(nil),     // 1: collector.CollectorRepoResponse
+	(*Empty)(nil),                     // 2: collector.Empty
+	(*SubscriptionsInfoResponse)(nil), // 3: collector.SubscriptionsInfoResponse
 }
 var file_collector_proto_depIdxs = []int32{
-	0, // 0: collector.CollectorService.GetRepository:input_type -> collector.CollectorRepoRequest
-	1, // 1: collector.CollectorService.GetRepository:output_type -> collector.CollectorRepoResponse
-	1, // [1:2] is the sub-list for method output_type
-	0, // [0:1] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	1, // 0: collector.SubscriptionsInfoResponse.repositories:type_name -> collector.CollectorRepoResponse
+	0, // 1: collector.CollectorService.GetRepository:input_type -> collector.CollectorRepoRequest
+	2, // 2: collector.CollectorService.GetSubscriptionsInfo:input_type -> collector.Empty
+	1, // 3: collector.CollectorService.GetRepository:output_type -> collector.CollectorRepoResponse
+	3, // 4: collector.CollectorService.GetSubscriptionsInfo:output_type -> collector.SubscriptionsInfoResponse
+	3, // [3:5] is the sub-list for method output_type
+	1, // [1:3] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_collector_proto_init() }
@@ -205,7 +294,7 @@ func file_collector_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_collector_proto_rawDesc), len(file_collector_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

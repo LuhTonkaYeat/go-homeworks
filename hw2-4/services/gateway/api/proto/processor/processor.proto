@@ -2,11 +2,12 @@ syntax = "proto3";
 
 package processor;
 
-option go_package = "github.com/LuhTonkaYeat/GoHomeworks/hw2/services/processor/api/proto";
+option go_package = "github.com/LuhTonkaYeat/GoHomeworks/hw2-4/services/processor/api/proto";
 
 service ProcessorService {
     rpc GetRepository(RepoRequest) returns (RepoResponse) {}
     rpc Ping(PingRequest) returns (PingResponse) {}
+    rpc GetSubscriptionsInfo(Empty) returns (SubscriptionsInfoResponse) {}
 }
 
 message RepoRequest {
@@ -26,4 +27,10 @@ message PingRequest {}
 
 message PingResponse {
     string status = 1;
+}
+
+message Empty {}
+
+message SubscriptionsInfoResponse {
+    repeated RepoResponse repositories = 1;
 }

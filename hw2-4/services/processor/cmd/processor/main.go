@@ -3,8 +3,9 @@ package main
 import (
 	"log"
 	"net"
+	"os"
 
-	pb "github.com/LuhTonkaYeat/GoHomeworks/hw2-4/services/processor/api/proto"
+	pb "github.com/LuhTonkaYeat/GoHomeworks/hw2-4/services/processor/api/proto/processor"
 	collectorclient "github.com/LuhTonkaYeat/GoHomeworks/hw2-4/services/processor/internal/adapter/grpc"
 	deliverygrpc "github.com/LuhTonkaYeat/GoHomeworks/hw2-4/services/processor/internal/delivery/grpc"
 	"github.com/LuhTonkaYeat/GoHomeworks/hw2-4/services/processor/internal/usecase"
@@ -12,8 +13,10 @@ import (
 )
 
 func main() {
-	collectorAddr := "collector:50051"
-	subscriberAddr := "subscriber:50052"
+	collectorAddr := os.Getenv("COLLECTOR_ADDR")
+	if collectorAddr == "" {
+		collectorAddr = "collector:50051"
+	}
 
 	collectorClient, err := collectorclient.NewClient(collectorAddr)
 	if err != nil {
@@ -21,17 +24,16 @@ func main() {
 	}
 	defer collectorClient.Close()
 
-	subscriberClient, err := collectorclient.NewSubscriberClient(subscriberAddr)
-	if err != nil {
-		log.Fatalf("Failed to create subscriber client: %v", err)
+	repoUseCase := usecase.NewRepositoryUseCase(collectorClient, nil)
+
+	grpcHandler := deliverygrpc.NewHandler(repoUseCase, collectorClient)
+
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "50052"
 	}
-	defer subscriberClient.Close()
 
-	repoUseCase := usecase.NewRepositoryUseCase(collectorClient, subscriberClient)
-
-	grpcHandler := deliverygrpc.NewHandler(repoUseCase)
-
-	listener, err := net.Listen("tcp", ":50053")
+	listener, err := net.Listen("tcp", ":"+port)
 	if err != nil {
 		log.Fatalf("Failed to listen: %v", err)
 	}
@@ -39,9 +41,8 @@ func main() {
 	server := grpc.NewServer()
 	pb.RegisterProcessorServiceServer(server, grpcHandler)
 
-	log.Println("Processor server started on :50053")
+	log.Printf("Processor server started on port %s", port)
 	log.Printf("Connected to Collector at %s", collectorAddr)
-	log.Printf("Connected to Subscriber at %s", subscriberAddr)
 
 	if err := server.Serve(listener); err != nil {
 		log.Fatalf("Failed to serve: %v", err)

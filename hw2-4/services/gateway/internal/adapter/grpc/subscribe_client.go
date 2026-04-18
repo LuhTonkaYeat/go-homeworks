@@ -3,13 +3,13 @@ package grpc
 import (
 	"context"
 
-	pb "github.com/LuhTonkaYeat/GoHomeworks/hw2-4/services/gateway/api/proto"
+	subscribePb "github.com/LuhTonkaYeat/GoHomeworks/hw2-4/services/gateway/api/proto/subscribe"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
 
 type SubscribeClient struct {
-	client pb.SubscribeServiceClient
+	client subscribePb.SubscribeServiceClient
 	conn   *grpc.ClientConn
 }
 
@@ -19,7 +19,7 @@ func NewSubscribeClient(addr string) (*SubscribeClient, error) {
 		return nil, err
 	}
 
-	client := pb.NewSubscribeServiceClient(conn)
+	client := subscribePb.NewSubscribeServiceClient(conn)
 
 	return &SubscribeClient{
 		client: client,
@@ -32,7 +32,7 @@ func (c *SubscribeClient) Close() error {
 }
 
 func (c *SubscribeClient) CreateSubscription(ctx context.Context, owner, repo, userID string) error {
-	req := &pb.CreateSubscriptionRequest{
+	req := &subscribePb.CreateSubscriptionRequest{
 		Owner:  owner,
 		Repo:   repo,
 		UserId: userID,
@@ -43,7 +43,7 @@ func (c *SubscribeClient) CreateSubscription(ctx context.Context, owner, repo, u
 }
 
 func (c *SubscribeClient) DeleteSubscription(ctx context.Context, owner, repo, userID string) error {
-	req := &pb.DeleteSubscriptionRequest{
+	req := &subscribePb.DeleteSubscriptionRequest{
 		Owner:  owner,
 		Repo:   repo,
 		UserId: userID,
@@ -53,8 +53,8 @@ func (c *SubscribeClient) DeleteSubscription(ctx context.Context, owner, repo, u
 	return err
 }
 
-func (c *SubscribeClient) GetSubscriptions(ctx context.Context, userID string) ([]*pb.Repository, error) {
-	req := &pb.Empty{}
+func (c *SubscribeClient) GetSubscriptions(ctx context.Context, userID string) ([]*subscribePb.Repository, error) {
+	req := &subscribePb.Empty{}
 
 	resp, err := c.client.GetSubscriptions(ctx, req)
 	if err != nil {

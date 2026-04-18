@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	collectorpb "github.com/LuhTonkaYeat/GoHomeworks/hw2-4/services/processor/api/proto"
+	collectorpb "github.com/LuhTonkaYeat/GoHomeworks/hw2-4/services/processor/api/proto/collector"
 	"github.com/LuhTonkaYeat/GoHomeworks/hw2-4/services/processor/internal/domain"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -69,4 +69,15 @@ func (c *Client) GetRepository(ctx context.Context, owner, repo string) (*domain
 		Forks:       int(resp.Forks),
 		CreatedAt:   createdAt,
 	}, nil
+}
+
+func (c *Client) GetSubscriptionsInfo(ctx context.Context) (*collectorpb.SubscriptionsInfoResponse, error) {
+	req := &collectorpb.Empty{}
+
+	resp, err := c.client.GetSubscriptionsInfo(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+
+	return resp, nil
 }

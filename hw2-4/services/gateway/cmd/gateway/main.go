@@ -44,7 +44,7 @@ func main() {
 	defer subscribeClient.Close()
 
 	repoUseCase := usecase.NewRepositoryUseCase(processorClient)
-	subscriptionUseCase := usecase.NewSubscriptionUseCase(subscribeClient)
+	subscriptionUseCase := usecase.NewSubscriptionUseCase(subscribeClient, processorClient)
 
 	httpHandler := httpHandler.NewHandler(repoUseCase, subscriptionUseCase)
 
@@ -56,6 +56,7 @@ func main() {
 	mux.HandleFunc("POST /subscriptions", httpHandler.CreateSubscription)
 	mux.HandleFunc("DELETE /subscriptions/{owner}/{repo}", httpHandler.DeleteSubscription)
 	mux.HandleFunc("GET /subscriptions", httpHandler.GetSubscriptions)
+	mux.HandleFunc("GET /subscriptions/info", httpHandler.GetSubscriptionsInfo)
 
 	mux.HandleFunc("/swagger/", httpSwagger.WrapHandler)
 
@@ -69,6 +70,7 @@ func main() {
 	log.Printf("  POST /subscriptions - subscribe to repository")
 	log.Printf("  DELETE /subscriptions/{owner}/{repo} - unsubscribe")
 	log.Printf("  GET /subscriptions - get all subscriptions")
+	log.Printf("  GET /subscriptions/info - get info for all subscriptions")
 	log.Printf("  GET /swagger/ - Swagger UI")
 
 	if err := http.ListenAndServe(port, mux); err != nil {

@@ -41,7 +41,6 @@ func (uc *repositoryUseCase) GetRepository(ctx context.Context, owner, repo stri
 }
 
 func (uc *repositoryUseCase) Ping(ctx context.Context) (string, error) {
-	// Проверяем subscriber
 	if uc.subscriberClient != nil {
 		if err := uc.subscriberClient.Ping(ctx); err != nil {
 			return "down", nil

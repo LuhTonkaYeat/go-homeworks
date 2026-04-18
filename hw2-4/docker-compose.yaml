@@ -1,4 +1,41 @@
 services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: github-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: subscribe
+    ports:
+      - "5432:5432"
+    networks:
+      - hw2-network
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  subscribe:
+    build:
+      context: ./services/subscribe
+      dockerfile: Dockerfile
+    container_name: github-subscribe
+    ports:
+      - "50054:50053"
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@postgres:5432/subscribe?sslmode=disable
+      - PORT=50053
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - hw2-network
+    restart: unless-stopped
+
   collector:
     build:
       context: ./services/collector
@@ -6,6 +43,11 @@ services:
     container_name: github-collector
     ports:
       - "50051:50051"
+    environment:
+      - SUBSCRIBE_ADDR=subscribe:50053
+      - PORT=50051
+    depends_on:
+      - subscribe
     networks:
       - hw2-network
     restart: unless-stopped
@@ -16,9 +58,10 @@ services:
       dockerfile: Dockerfile
     container_name: github-processor
     ports:
-      - "50053:50053"
+      - "50052:50052"
     environment:
       - COLLECTOR_ADDR=collector:50051
+      - PORT=50052
     depends_on:
       - collector
     networks:
@@ -33,9 +76,11 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - COLLECTOR_ADDR=collector:50051
+      - PROCESSOR_ADDR=processor:50052
+      - SUBSCRIBE_ADDR=subscribe:50053
     depends_on:
-      - collector
+      - processor
+      - subscribe
     networks:
       - hw2-network
     restart: unless-stopped
@@ -43,3 +88,6 @@ services:
 networks:
   hw2-network:
     driver: bridge
+
+volumes:
+  postgres_data:

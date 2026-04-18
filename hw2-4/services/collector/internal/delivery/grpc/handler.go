@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	pb "github.com/LuhTonkaYeat/GoHomeworks/hw2-4/services/collector/api/proto"
+	pb "github.com/LuhTonkaYeat/GoHomeworks/hw2-4/services/collector/api/proto/collector"
 	"github.com/LuhTonkaYeat/GoHomeworks/hw2-4/services/collector/internal/usecase"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -42,4 +42,24 @@ func (h *Handler) GetRepository(ctx context.Context, req *pb.CollectorRepoReques
 		Forks:       int32(repo.Forks),
 		CreatedAt:   repo.CreatedAt.Format(time.RFC3339),
 	}, nil
+}
+
+func (h *Handler) GetSubscriptionsInfo(ctx context.Context, req *pb.Empty) (*pb.SubscriptionsInfoResponse, error) {
+	repositories, err := h.repoUseCase.GetSubscriptionsInfo(ctx)
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	var repos []*pb.CollectorRepoResponse
+	for _, repo := range repositories {
+		repos = append(repos, &pb.CollectorRepoResponse{
+			Name:        repo.Name,
+			Description: repo.Description,
+			Stars:       int32(repo.Stars),
+			Forks:       int32(repo.Forks),
+			CreatedAt:   repo.CreatedAt.Format(time.RFC3339),
+		})
+	}
+
+	return &pb.SubscriptionsInfoResponse{Repositories: repos}, nil
 }
