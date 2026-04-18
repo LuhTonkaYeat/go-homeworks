@@ -1,4 +1,4 @@
-module github.com/LuhTonkaYeat/GoHomeworks/hw2/services/collector
+module github.com/LuhTonkaYeat/GoHomeworks/hw2-4/services/collector
 
 go 1.26.1
 

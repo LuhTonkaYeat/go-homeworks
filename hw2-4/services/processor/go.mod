@@ -1,4 +1,4 @@
-module github.com/LuhTonkaYeat/GoHomeworks/hw2/services/processor
+module github.com/LuhTonkaYeat/GoHomeworks/hw2-4/services/processor
 
 go 1.26.1
 
