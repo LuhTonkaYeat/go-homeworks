@@ -3,8 +3,8 @@ package grpc
 import (
 	"context"
 
-	pb "github.com/LuhTonkaYeat/GoHomeworks/hw2/services/processor/api/proto"
-	"github.com/LuhTonkaYeat/GoHomeworks/hw2/services/processor/internal/usecase"
+	pb "github.com/LuhTonkaYeat/GoHomeworks/hw2-4/services/processor/api/proto"
+	"github.com/LuhTonkaYeat/GoHomeworks/hw2-4/services/processor/internal/usecase"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )

@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	collectorpb "github.com/LuhTonkaYeat/GoHomeworks/hw2/services/processor/api/proto"
-	"github.com/LuhTonkaYeat/GoHomeworks/hw2/services/processor/internal/domain"
+	collectorpb "github.com/LuhTonkaYeat/GoHomeworks/hw2-4/services/processor/api/proto"
+	"github.com/LuhTonkaYeat/GoHomeworks/hw2-4/services/processor/internal/domain"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials/insecure"

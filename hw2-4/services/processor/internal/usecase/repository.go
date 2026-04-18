@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/LuhTonkaYeat/GoHomeworks/hw2/services/processor/internal/domain"
+	"github.com/LuhTonkaYeat/GoHomeworks/hw2-4/services/processor/internal/domain"
 )
 
 type RepositoryUseCase interface {

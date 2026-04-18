@@ -4,10 +4,10 @@ import (
 	"log"
 	"net"
 
-	pb "github.com/LuhTonkaYeat/GoHomeworks/hw2/services/processor/api/proto"
-	collectorclient "github.com/LuhTonkaYeat/GoHomeworks/hw2/services/processor/internal/adapter/grpc"
-	deliverygrpc "github.com/LuhTonkaYeat/GoHomeworks/hw2/services/processor/internal/delivery/grpc"
-	"github.com/LuhTonkaYeat/GoHomeworks/hw2/services/processor/internal/usecase"
+	pb "github.com/LuhTonkaYeat/GoHomeworks/hw2-4/services/processor/api/proto"
+	collectorclient "github.com/LuhTonkaYeat/GoHomeworks/hw2-4/services/processor/internal/adapter/grpc"
+	deliverygrpc "github.com/LuhTonkaYeat/GoHomeworks/hw2-4/services/processor/internal/delivery/grpc"
+	"github.com/LuhTonkaYeat/GoHomeworks/hw2-4/services/processor/internal/usecase"
 	"google.golang.org/grpc"
 )
 
